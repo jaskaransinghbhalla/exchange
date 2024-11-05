@@ -7,8 +7,6 @@ const PORT = 3000;
 const BASE_ASSET = "BTC";
 const QUOTE_ASSET = "USD";
 
-let GLOBAL_TRADE_ID: number = 0;
-
 const app = express();
 app.use(express.json());
 
@@ -32,7 +30,7 @@ app.post("/api/v1/order", (req, res) => {
     price,
     quantity,
     side,
-    kind
+    kind,
   );
   res.send({
     orderId,

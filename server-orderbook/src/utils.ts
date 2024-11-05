@@ -1,6 +1,8 @@
 // Utils
 import { bookWithQuantitiy, Fill, orderbook } from "./orderbook";
 
+let GLOBAL_TRADE_ID: number = 0;
+
 export const getOrderId = (): string => {
   return (
     Math.random().toString(36).substring(2, 15) +
@@ -23,6 +25,27 @@ export const fillOrder = (
     return { status: "rejected", executedQty: maxFillQuantity, fills: [] };
   }
   if (side === "buy") {
+    orderbook.asks.forEach((o) => {
+      if (o.price <= price && quantity > 0) {
+        const filledQuantity = Math.min(quantity, o.quantity);
+        o.quantity -= filledQuantity;
+        bookWithQuantitiy.asks[o.price] =
+          (bookWithQuantitiy.asks[o.price] || 0) - filledQuantity;
+        fills.push({
+          price: o.price,
+          qty: filledQuantity,
+          tradeId: GLOBAL_TRADE_ID++,
+        });
+        executedQty += filledQuantity;
+        quantity -= filledQuantity;
+        if (o.quantity === 0) {
+          orderbook.asks.splice(orderbook.asks.indexOf(o), 1);
+        }
+        if (bookWithQuantitiy.asks[price] === 0) {
+          delete bookWithQuantitiy.asks[price];
+        }
+      }
+    });
     if (quantity !== 0) {
       orderbook.bids.push({
         price,
@@ -32,6 +55,28 @@ export const fillOrder = (
       });
     }
   } else {
+    orderbook.bids.forEach((o) => {
+      if (o.price >= price && quantity > 0) {
+        const filledQuantity = Math.min(quantity, o.quantity);
+        o.quantity -= filledQuantity;
+        bookWithQuantitiy.bids[price] =
+          (bookWithQuantitiy.bids[price] || 0) - filledQuantity;
+        fills.push({
+          price: o.price,
+          qty: filledQuantity,
+          tradeId: GLOBAL_TRADE_ID++,
+        });
+        executedQty += filledQuantity;
+        quantity -= filledQuantity;
+        if (o.quantity === 0) {
+          orderbook.bids.splice(orderbook.bids.indexOf(o), 1);
+        }
+        if (bookWithQuantitiy.bids[price] == 0) {
+          delete bookWithQuantitiy.bids[price];
+        }
+      }
+    });
+
     if (quantity !== 0) {
       orderbook.asks.push({
         price,
