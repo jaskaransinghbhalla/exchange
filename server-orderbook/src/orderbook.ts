@@ -30,3 +30,8 @@ export const bookWithQuantitiy: {
   bids: {},
   asks: {},
 };
+export interface Fill {
+  price: number;
+  qty: number;
+  tradeId: number;
+}
