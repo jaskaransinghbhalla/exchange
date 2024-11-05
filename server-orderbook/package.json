@@ -1,0 +1,31 @@
+{
+  "name": "exchange",
+  "version": "1.0.0",
+  "description": "### System Design",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/jaskaransinghbhalla/exchange.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jaskaransinghbhalla/exchange/issues"
+  },
+  "homepage": "https://github.com/jaskaransinghbhalla/exchange#readme",
+  "dependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.9.0",
+    "@types/redis": "^4.0.10",
+    "@types/uuid": "^10.0.0",
+    "express": "^4.21.1",
+    "redis": "^4.7.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3",
+    "uuid": "^11.0.2",
+    "zod": "^3.23.8"
+  }
+}
